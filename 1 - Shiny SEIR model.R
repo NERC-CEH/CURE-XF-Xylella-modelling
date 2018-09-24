@@ -81,7 +81,7 @@ ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
       
-      h4("Settings for asymptomatic infecteds"),
+      h3("Settings for asymptomatic infecteds"),
       
       sliderInput(inputId="transmission_rate_E",
                   label="Transmission rate",
@@ -95,7 +95,7 @@ ui <- fluidPage(
                   label="Average length of asymptomatic period (years)",
                   value=1, min=0.1, max=3.0, step=0.1),
       
-      h4("Settings for symptomatic infecteds"),
+      h3("Settings for symptomatic infecteds"),
       
       sliderInput(inputId="transmission_rate_I",
                   label="Transmission rate",
@@ -105,7 +105,7 @@ ui <- fluidPage(
                   label="Mortality per year",
                   value=0.2, min=0, max=1, step=0.01),
       
-      h4("General settings"),
+      h3("Other settings"),
       
       sliderInput(inputId="vaccination_rate",
                   label="Vaccination rate",
