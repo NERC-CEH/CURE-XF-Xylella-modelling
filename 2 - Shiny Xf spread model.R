@@ -70,7 +70,7 @@ sim_spread = function(df, r=1, beta=0.4, number_of_years=15,
     
     # 1 - Do surveillance and removal...
     # make an index of all infected cells in the buffer zone
-    bufferIdx = which(df$Xf>0 & df$zone %in% c("containment", "surveillance")) 
+    bufferIdx = which(df$Xf>0 & df$zone == "buffer") 
     # simulate sampling and diagnostic testing...
     positiveTests = sapply(bufferIdx, function(i){
       prPos = df$Xf[i]*(1-testFNR) # probability of taking a positive sample
