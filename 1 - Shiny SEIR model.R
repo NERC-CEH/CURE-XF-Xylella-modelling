@@ -18,10 +18,10 @@ library(reshape)
 SEIR_model = function(initial_infection=0.001, 
                       transmission_rate_E = 1,
                       transmission_rate_I = 2,
-                      latent_period_yrs = 1,
-                      yrs_to_death_E = 200,
-                      yrs_to_death_I = 20,
-                      vaccination_rate = 0.1,
+                      latent_period_yrs = 0,
+                      yrs_to_death_E = Inf,
+                      yrs_to_death_I = 5,
+                      vaccination_rate = 0,
                       number_of_years = 20,
                       plot=TRUE){
   # Solve continuous SEIR with latent infections
@@ -58,11 +58,9 @@ SEIR_model = function(initial_infection=0.001,
   
   if(plot){
     df = melt(out, id.vars="time")
-    myPalette = c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#999999")[c(7,3,6,2,4,8,5)]
     print(ggplot(df, aes(x=time, y=value, colour=variable, shape=variable)) +
             geom_line(lwd=1) +
             geom_point(data=df[df$time%%2==0,], inherit.aes=TRUE, size=3) +
-            scale_colour_manual(values=myPalette) +
             ylab("Proportion of population") +
             xlab("Years since infection") +
             theme(legend.title = element_blank()))
@@ -84,36 +82,38 @@ ui <- fluidPage(
       h3("Settings for asymptomatic infecteds"),
       
       sliderInput(inputId="transmission_rate_E",
-                  label="Transmission rate",
-                  value=0.5, min=0, max=6.0, step=0.1),
+                  label="Transmission rate (beta_E)",
+                  value=0.5, min=0, max=10.0, step=0.05),
       
       sliderInput(inputId="mortality_E",
-                  label="Mortality per year",
+                  label="Mortality per year (v_E)",
                   value=0, min=0, max=1, step=0.01),
       
       sliderInput(inputId="latent_period_yrs",
-                  label="Average length of asymptomatic period (years)",
+                  label="Average years asymptomatic (1/sigma)",
                   value=1, min=0.1, max=3.0, step=0.1),
       
       h3("Settings for symptomatic infecteds"),
       
       sliderInput(inputId="transmission_rate_I",
-                  label="Transmission rate",
+                  label="Transmission rate (beta_I)",
                   value=3, min=0, max=10, step=0.1),
       
       sliderInput(inputId="mortality_I",
-                  label="Mortality per year",
+                  label="Mortality per year (v_I)",
                   value=0.2, min=0, max=1, step=0.01),
       
       h3("Other settings"),
       
-      sliderInput(inputId="vaccination_rate",
-                  label="Vaccination rate",
-                  value=0, min=0, max=1, step=0.01),
-      
       sliderInput(inputId="number_of_years",
                   label="Number of years",
-                  value=20, min=1, max=100, step=1)
+                  value=20, min=1, max=100, step=1),
+      
+      sliderInput(inputId="vaccination_rate",
+                  label="Vaccination rate",
+                  value=0, min=0, max=1, step=0.01)
+      
+      
     ),
     
     # *Output() functions
